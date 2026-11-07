@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://correctover.com/schemas/risk-gazetteer-0.1.json",
+  "title": "Correctover MCP Risk Gazetteer entry schema v0.1",
+  "description": "Per-server risk gazetteer entry over the frozen MCP Atlas Milestone-A baseline (42,163 servers / 229,827 tool params, 2026-10-12, SHA-256 anchored, Zenodo). Differentiator vs. letter-grade scanners (CSA RiskRubric A-F, PolicyLayer verb classes): every label carries an evidence chain pointing back to frozen baseline parameter paths and rule refs, plus a traceability block stating whether the server's decisions are runtime-verifiable under a pinned verifier. Designed to be citable by papers and by the draft-correctover-gg-mcp-parameter-risk vocabulary.",
+  "type": "object",
+  "required": ["spec", "baseline", "panel_week", "entries"],
+  "properties": {
+    "spec": { "const": "correctover-risk-gazetteer/0.1" },
+    "baseline": {
+      "type": "object",
+      "required": ["name", "frozen_at", "servers_sha256", "tools_sha256", "zenodo_doi"],
+      "properties": {
+        "name": { "const": "mcp-atlas-milestone-a" },
+        "frozen_at": { "const": "2026-10-12" },
+        "servers_sha256": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+        "tools_sha256": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+        "zenodo_doi": { "type": "string" }
+      }
+    },
+    "panel_week": { "type": "string", "pattern": "^\\d{4}-W\\d{2}$", "description": "Longitudinal panel anchor — weekly re-labels append, never overwrite; the panel is the citable longitudinal table." },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["server_id", "risk_classes", "money_touching", "credential_touching", "traceability"],
+        "properties": {
+          "server_id": { "type": "string", "description": "Frozen baseline primary key (Atlas servers table row id)." },
+          "name": { "type": "string" },
+          "repo": { "type": "string" },
+          "risk_classes": {
+            "type": "array",
+            "items": { "enum": ["credential", "filesystem", "command", "money", "url"] },
+            "description": "draft-correctover-gg-mcp-parameter-risk canonical classes — the gazetteer labels ARE the vocabulary's application."
+          },
+          "money_touching": { "$ref": "#/$defs/labelWithEvidence" },
+          "credential_touching": { "$ref": "#/$defs/labelWithEvidence" },
+          "traceability": {
+            "type": "object",
+            "required": ["runtime_verifiable", "receipt_compatible"],
+            "properties": {
+              "runtime_verifiable": { "type": "boolean", "description": "Whether decisions of this server can be independently re-verified from published keys + records." },
+              "receipt_compatible": { "enum": ["ccs-1.0", "boundaryattest-0.1", "l3-rollback-0.1", "none"] },
+              "verifier_pin": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$", "description": "Pinned verifier/inventory digest when receipt_compatible != none." }
+            }
+          },
+          "scene_tags_zh": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "场景化中文标签（如 支付结算/凭证管理/命令执行/文件写入/网络请求）——中文生态可查询图鉴层。"
+          },
+          "citations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["kind", "ref"],
+              "properties": {
+                "kind": { "enum": ["zenodo", "ghsa", "cve", "advisory", "baseline-param-path"] },
+                "ref": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "labelWithEvidence": {
+      "type": "object",
+      "required": ["label", "evidence"],
+      "properties": {
+        "label": { "type": "boolean" },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "description": "Non-empty when label=true: parameter paths in the frozen baseline + vocabulary rule refs. No naked labels — an unlabeled claim is unverifiable and must be omitted.",
+          "items": {
+            "type": "object",
+            "required": ["source", "ref"],
+            "properties": {
+              "source": { "enum": ["baseline-param-path", "vocabulary-rule", "advisory"] },
+              "ref": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}
