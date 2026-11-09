@@ -34,6 +34,6 @@ Aggregate statistics and method are public (this repo + the white paper). Server
 
 ## Related
 
-- Baseline census: Zenodo DOI 10.5281/zenodo.23333369 (MCP Atlas Milestone A, SHA-256 frozen 2026-10-12)
+- Baseline census: Zenodo DOI 10.5281/zenodo.23333514 (MCP Atlas Milestone A, ODC-BY, SHA-256 frozen 2026-10-12); static audit record: DOI 10.5281/zenodo.23333516 (ODC-BY). Citation erratum: the earlier 10.5281/zenodo.23333369 reference pointed to the Joint Interoperability Report — corrected in whitepaper v0.2.1 (DOI 10.5281/zenodo.24072293)
 - Vocabulary: draft-correctover-gg-mcp-parameter-risk-01 (five canonical classes)
 - Receipts: draft-correctover-ccs-10 + L3-R rollback-evidence extension (DSHCorrectover/ccs-conformance-vectors @ 9bf254c)
