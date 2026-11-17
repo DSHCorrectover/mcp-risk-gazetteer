@@ -1,5 +1,7 @@
 # MCP Risk Gazetteer — schema v0.1（占位发布，2026-11-07）
 
+[**Commercial verification engagements — USD 8,000–15,000, court-ready dossier**](https://dshcorrectover.github.io/correctover-recovery-admission/services.html) · [**Independent audit & conformance**](https://dshcorrectover.github.io/correctover-recovery-admission/services.html)
+
 **一句话**：不是又一个评级表——每一条标签都带证据链（冻结基线参数路径 + 词表 rule 引用），每一条可追溯性声明都 pin 验证器指纹。设计目标：**可被论文和工程师默认引用**。
 
 ## 与现有评级的差异（学什么/不刚什么）
